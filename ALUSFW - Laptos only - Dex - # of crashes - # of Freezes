@@ -1,0 +1,17 @@
+devices during past 7d
+| where (device.device.name == "alusfw-l*" and (device.device.hardware.model != "*zbook*" and device.device.hardware.model != "*elite x2 g8 tablet*"))
+| include dex.scores during past 7d
+| where device.name in ["alusfw-l*"]
+    and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]
+| where device.hardware.model !in ["*zbook*"]
+| where device.hardware.model !in ["*elite x2 g8 tablet*"]
+| compute dex_score_ = score.value.avg()
+| include execution.crashes during past 7d
+| where binary.product_name !in ["ALUSFW-LL"]
+| compute number_of_crashes_ = crash.number_of_crashes.sum()
+| include execution.events during past 7d
+| where binary.product_name !in ["ALUSFW-LP", "ALUSFW-LO", "ALUSFW-LR", "ALUSFW-LL", "ALUSFW-LT"]
+| compute number_of_freezes_ = event.number_of_freezes.sum()
+| where number_of_freezes_ > 0
+| list device.name, device.hardware.model, dex_score_, number_of_crashes_, number_of_freezes_
+| sort dex_score_ asc
