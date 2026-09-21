@@ -1,0 +1,3 @@
+devices during past 90d
+| where (((((days_since_last_seen >= 30 and hardware.manufacturer == "hewlett-packard") and hardware.type == laptop) and name == "alusfw-l*") and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]) and hardware.model !in ["*zbook*", "*elite x2*", "*x360*"])
+| list name, last_seen, days_since_last_seen, hardware.model, login.last_login_user_name
