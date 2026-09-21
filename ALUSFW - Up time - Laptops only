@@ -1,0 +1,5 @@
+devices during past 30d
+| where (((hardware.manufacturer == "hewlett-packard" and hardware.type == laptop) and hardware.model !in ["*zbook*", "*elite x2*", "*x360*"]) and (name == "*alusfw-l*" and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]))
+    and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]
+| list name, hardware.model, boot.days_since_last_full_boot, boot.last_full_boot_time
+| sort boot.days_since_last_full_boot desc
