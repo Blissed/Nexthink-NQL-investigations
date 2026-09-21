@@ -1,0 +1,7 @@
+devices during past 30d
+| where (((hardware.manufacturer == "hewlett-packard" and hardware.type == desktop) and name in ["alusfw-w*"]) and name !in ["alusfw-wl*", "alusfw-wd*", "alusfw-wr*", "alusfw-wt*", "alusfw-wx*"])
+| include device_performance.events during past 30d
+| compute system_drive_capacity_ = system_drive_capacity.avg(), system_drive_free_space_ = system_drive_free_space.avg()
+| where system_drive_free_space_ <= 60GB
+| list name, hardware.model, system_drive_capacity_, system_drive_free_space_
+| sort system_drive_free_space_ asc
