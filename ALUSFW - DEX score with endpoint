@@ -1,0 +1,6 @@
+devices during past 24h
+| where ((name == "alusfw-l*" and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]) and hardware.model !in ["*zbook*", "*elite x2*", "*x360*"])
+| include dex.scores during past 24h
+| compute dex_score_ = value.avg(), endpoint_score_ = endpoint.value.avg()
+| list name, hardware.model, dex_score_, endpoint_score_
+| sort endpoint_score_ asc
