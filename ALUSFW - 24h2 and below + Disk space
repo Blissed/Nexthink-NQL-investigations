@@ -1,0 +1,6 @@
+devices during past 15d
+| where (((((hardware.manufacturer == "hewlett-packard" and hardware.type == laptop) and name in ["alusfw-l*"]) and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]) and hardware.model !in ["*zbook*", "*elite x2*", "*x360*"]) and operating_system.build <= v26100)
+| include device_performance.events during past 15d
+| compute system_drive_capacity_ = system_drive_capacity.avg(), system_drive_free_space_ = system_drive_free_space.avg()
+| list name, operating_system.name, operating_system.build, system_drive_free_space_
+| sort system_drive_free_space_ asc
