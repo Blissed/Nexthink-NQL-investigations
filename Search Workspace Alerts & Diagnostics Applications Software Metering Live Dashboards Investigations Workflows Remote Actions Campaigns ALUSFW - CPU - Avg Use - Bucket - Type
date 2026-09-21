@@ -1,0 +1,8 @@
+devices during past 15d
+| where (((hardware.manufacturer == "hewlett-packard" and hardware.type == laptop) and name == "alusfw-l*") and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"])
+| include device_performance.events during past 15d
+| compute avg_cpu_usage_ = normalized_cpu_usage.avg(), peak_cpu_usage_ = normalized_cpu_usage.max(), high_cpu_duration_ = cpu.duration_with_high_usage.sum(), buckets_ = count()
+| where (((device.hardware.manufacturer == "hewlett-packard" and device.hardware.type == laptop) and device.name == "alusfw-l*") and device.name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"])
+| Where hardware.model !in ["*zbook*", "*elite x2*", "*x360*", "*tablet*", "*workstation*"]
+| list name, hardware.model, avg_cpu_usage_, peak_cpu_usage_, high_cpu_duration_, buckets_, cpus
+| sort avg_cpu_usage_  desc
