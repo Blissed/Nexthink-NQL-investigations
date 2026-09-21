@@ -1,4 +1,5 @@
 devices during past 90d
 | where (((((name == "alusfw-l*" and name != "alusfw-l*z*") and name != "alusfw-l*e*") and name != "alusfw-l*x*") and hardware.manufacturer == "hewlett-packard") and hardware.type == laptop)
+    and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]
 | list name, login.last_login_user_name, last_seen, name, login.last_login_user_name, days_since_last_seen, last_seen.time_elapsed()
 | sort last_seen.time_elapsed() desc
