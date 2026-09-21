@@ -1,0 +1,9 @@
+devices during past 15d
+| where hardware.manufacturer == "hewlett-packard"
+    and hardware.type == desktop
+    and name in ["alusfw-w*"]
+    and name !in ["alusfw-wl*", "alusfw-wd*", "alusfw-wr*"]
+    and hardware.model !in ["*zbook*", "*elite x2*", "*x360*"]
+    and operating_system.build <= v26100
+| list name, operating_system.name, operating_system.build
+| sort operating_system.build asc
