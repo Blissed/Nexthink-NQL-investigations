@@ -1,0 +1,6 @@
+devices during past 15d
+| where (((hardware.manufacturer == "hewlett-packard" and hardware.type == laptop) and name in ["alusfw-l*", "alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"]) and hardware.model !in ["zbook", "elite x2", "x360"])
+| include execution.events during past 15d
+| compute failed_connections_ = number_of_no_host_connections.sum(), failed_connections__ = number_of_no_service_connections.sum(), failed_connections___no_host_ = number_of_no_host_connections.sum(), failed_connections___no_service_ = number_of_no_service_connections.sum(), failed_connections___rejected_ = number_of_rejected_connections.sum()
+| list name, login.last_login_user_name, operating_system.name, connectivity.last_connectivity_type, failed_connections_, failed_connections__, failed_connections___no_host_, failed_connections__, failed_connections___no_service_, failed_connections__, failed_connections___rejected_, failed_connections__
+| sort Failed_connections___no_host_ desc
