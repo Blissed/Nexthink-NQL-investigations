@@ -1,0 +1,4 @@
+devices during past 7d
+| where operating_system.platform == macos
+| where name == "ALUSFW-*"
+| list name
