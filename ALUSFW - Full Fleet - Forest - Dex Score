@@ -1,0 +1,10 @@
+devices during past 30d
+| where (((hardware.manufacturer == "hewlett-packard" and hardware.type in [laptop, desktop]) and name in ["alusfw-l*", "alusfw-w*"]) and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*"])
+| include dex.scores during past 24h
+| compute dex_score_ = value.avg(), endpoint_score_ = endpoint.value.avg()
+| include dex.scores during past 30d
+| compute technology_score_ = technology.value.avg()
+| where (hardware.model != "*zbook*" and hardware.model != "*elite x2*")
+| summarize no_of_devices_ = count(), dex_score__ = dex_score_.avg(), endpoint_score__ = endpoint_score_.avg() by hardware.model
+| list hardware.model, no_of_devices_, dex_score__, endpoint_score__
+| sort dex_score__ asc
