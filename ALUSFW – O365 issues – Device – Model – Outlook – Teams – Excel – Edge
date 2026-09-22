@@ -1,0 +1,7 @@
+devices during past 30d
+| where (name == "alusfw-l*" and name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*", "alusfw-lt*"])
+| include execution.crashes during past 30d
+| compute outlook_crashes_ = number_of_crashes.sumif(binary.product_name == "microsoft outlook"), teams_crashes_ = number_of_crashes.sumif(binary.product_name == "microsoft teams"), excel_crashes_ = number_of_crashes.sumif(binary.product_name == "microsoft excel"), edge_crashes_ = number_of_crashes.sumif(binary.product_name == "microsoft edge")
+| where (((outlook_crashes_ > 0 or teams_crashes_ > 0) or excel_crashes_ > 0) or edge_crashes_ > 0)
+| summarize outlook_ = outlook_crashes_.sum(), teams_ = teams_crashes_.sum(), excel_ = excel_crashes_.sum(), edge_ = edge_crashes_.sum() by name, hardware.model
+| sort outlook_ desc
