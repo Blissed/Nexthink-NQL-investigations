@@ -1,0 +1,3 @@
+remote_action.get_bitlocker_information_windows.executions during past 30d
+| where (((device.hardware.manufacturer == "hewlett-packard" and device.hardware.type == laptop) and device.name in ["alusfw-l*", "alusfw-w*"]) and device.name !in ["alusfw-wl*", "alusfw-ll*", "alusfw-wd*", "alusfw-wr*", "alusfw-lr*", "alusfw-ld*"])
+| summarize no_of_devices_ = device.count() by outputs.ProtectionStatus
