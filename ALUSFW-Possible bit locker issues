@@ -1,0 +1,8 @@
+device.devices during past 30d
+| where (device.name == "alusfw-*" and device.hardware.type != virtual)
+| include remote_action.get_bitlocker_information_windows.executions during past 30d
+| where (remote_action.get_bitlocker_information_windows.execution.outputs.SystemDriveReady == false or remote_action.get_bitlocker_information_windows.execution.outputs.TPMIsActive == false)
+| compute number_of_executions_ = get_bitlocker_information_windows.execution.number_of_executions.sum()
+| where number_of_executions_ != 0
+| list device.name, device.entity, device.hardware.model, device.hardware.type, device.operating_system.name, number_of_executions_
+| sort number_of_executions_ desc
